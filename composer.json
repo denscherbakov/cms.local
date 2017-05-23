@@ -1,0 +1,15 @@
+{
+    "name": "cms",
+    "authors": [
+        {
+            "name": "Denis Shcherbakov",
+            "email": "denscherbakov@yandex.ru"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Engine\\": "engine"
+        }
+    }
+}
