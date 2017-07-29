@@ -10,8 +10,8 @@ class UriDispatcher
     ];
 
     private $routes = [
-        'GET'   => '',
-        'POST'  => ''
+        'GET'   => [],
+        'POST'  => []
     ];
 
     private $patterns = [
@@ -33,7 +33,15 @@ class UriDispatcher
      */
     private function routes($method)
     {
-        return isset($this->routes[$method]) ? $this->routes($method) : [];
+        return isset($this->routes[$method]) ? $this->routes[$method] : [];
+    }
+
+    public function register($method, $pattern, $controller)
+    {
+        var_dump($method);
+        var_dump($pattern);
+        var_dump($controller);die;
+        $this->routes[strtoupper($method)][$pattern] = $controller;
     }
 
     /**
@@ -48,6 +56,19 @@ class UriDispatcher
         if (array_key_exists($uri, $routes))
         {
             return new RouteDispatched($routes[$uri]);
+        }
+
+        return $this->doDispatch($method, $uri);
+    }
+
+    private function doDispatch($method, $uri)
+    {
+        foreach ($this->routes($method) as $route => $controller){
+            $pattern = '#^' . $route . '$#s';
+
+            if (preg_match($pattern, $uri, $parameters)){
+                return new RouteDispatched($controller, $parameters);
+            }
         }
     }
 }

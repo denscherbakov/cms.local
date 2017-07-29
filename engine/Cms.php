@@ -1,6 +1,10 @@
 <?php
 
 namespace Engine;
+
+use Engine\Core\Router\RouteDispatched;
+use Engine\Helper\Common;
+
 class Cms
 {
     /**
@@ -25,7 +29,23 @@ class Cms
      */
     public function run()
     {
-        $this->router->add('Home', '/', 'HomeController@index');
-        var_dump($this->di);
+        try {
+            $this->router->add('home', '/', 'HomeController:index');
+            $this->router->add('product', '/product/12', 'ProductController:index');
+
+            $routerDispatch = $this->router->dispatch(Common::getMethod(), Common::getPathUri());
+
+            if ($routerDispatch == null){
+                $routerDispatch = new RouteDispatched('ErrorController:page404');
+            }
+
+            list($class, $action) = explode(':', $routerDispatch->getController(), 2);
+
+            $controller = '\\Cms\\Controller\\' . $class;
+            call_user_func_array([new $controller($this->di), $action], $routerDispatch->getParameters());
+        } catch (\Exception $e){
+            echo $e->getMessage();
+            exit;
+        }
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Engine\Services\Db;
+namespace Engine\Service\Db;
 
-use \Engine\Services\AbstractProvider;
+use \Engine\Service\AbstractProvider;
 use \Engine\Core\Db\Db;
 
 class DbProvider extends AbstractProvider

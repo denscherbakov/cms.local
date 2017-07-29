@@ -8,7 +8,7 @@ use Engine\DI;
 try {
     $di = new DI();
 
-    $services = require __DIR__ . '/configs/Service.php';
+    $services = require __DIR__ . '/config/Service.php';
 
     foreach ($services as $service){
         $provider = new $service($di);
